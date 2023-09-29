@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load mathfilters %}
+<div class="column">
+{% for bill in bills %}
+    <div class="block">
+      <div class="card">
+          <div class="card-content">
+            <div class="media">
+              <div class="media-left">
+                <form method="post">{% csrf_token %}
+                  <button class="button is-primary" name="id" value="{{bill.id}}"> Mark Paid </button>
+                </form>
+              </div>
+              {% if user.get_username == "Sam" %}
+              <div class="media-left">
+                <form method="post">{% csrf_token %}
+                  <button class="button is-primary" name="master" value="{{bill.id}}"> Mark All Paid </button>
+                </form>
+              {% endif %}
+              </div>
+              <div class="media-content">
+                <p class="title is-4">
+                {{bill.provider}}
+                </p>
+                <p class="subtitle">
+                  <div class="content">
+                    <ul> 
+                      Type: {{bill.btype}} <br>
+                      Date Issued: {{bill.date}} <br>
+                      Total Amount: ${{bill.amount|floatformat:2}} <br>
+                      Per Roomate Amount: ${{bill.amount|div:4|floatformat:2}} <br>
+                      <br> Whos Paid ? <br> 
+                      {% if bill.johnpaid %} John Paid <br> {% else %} {% endif %}
+                      {% if bill.liampaid %} Liam Paid <br> {% else %} {% endif %}
+                      {% if bill.santipaid %} Santi Paid <br> {% else %} {% endif %}
+                      {% if bill.sampaid %} Sam Paid <br> {% else %} {% endif %}
+                    </ul>
+                  </div>
+                </p>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+{% endfor %}
+</div>
+{% endblock content %}
+
+
+
